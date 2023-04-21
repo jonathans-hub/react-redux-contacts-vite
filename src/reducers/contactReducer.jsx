@@ -29,10 +29,15 @@ export const contactReducer = (state = initialState, { type, payload }) => {
       name:  payload.name,
       cnumber: payload.cnumber,
       location: payload.location,
+      id: Math.random().toString(),
     }   
     return { ...state, contacts:[...state.contacts, newContact ] }
-
-  default:
-    return state
+    case "REMOVE_CONTACT":
+      const undeletedcontacts = state.contacts.filter( contact => contact.id !== payload);
+      return{contacts: undeletedcontacts,}
+    case "EDIT_CONTACT":
+      return  {contacts: state.contacts.map((contact) => (contact.id === payload.contact_id ? payload.new_contact : contact)), } 
+    default:  
+      return state;
   }
 }
